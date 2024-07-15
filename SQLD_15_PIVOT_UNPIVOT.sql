@@ -2,7 +2,6 @@
 -- Writer         : 땃지
 -- Course URL     : https://inf.run/FGmid
 -- Email          : coddat.g@gmail.com
--- Last Updated   : 2024-06-28
 -- Copyright      : Copyright 2024. by 땃지. All Rights Reserved.
 -- Notice         : 이 쿼리 스크립트를 가공, 인용하실 때는 출처를 명확히 밝혀주시기 바랍니다.
 --------------------------------------------------------------------------------------
@@ -46,7 +45,7 @@ PIVOT (avg(sal) FOR deptno IN (10 AS D10, 20 AS D20, 30 AS D30));
 SELECT to_char(hiredate, 'YYYY') AS YYYY, 
 	job, deptno, avg(sal)
 FROM emp
-GROUP BY  to_char(hiredate, 'YYYY'), job, deptno
+GROUP BY to_char(hiredate, 'YYYY'), job, deptno
 
 SELECT *
 FROM (SELECT to_char(hiredate, 'YYYY') AS YYYY, job, deptno, sal FROM emp)
@@ -81,7 +80,7 @@ SELECT *
 FROM (SELECT job, deptno, sal FROM emp)
 PIVOT (avg(sal) AS sal, count(*) AS cnt FOR deptno IN (10, 20))
 
--- 중심 열 두개 이상 조합 가능
+-- 피봇 컬럼 두개 이상 조합 가능
 SELECT *
 FROM (SELECT to_char(hiredate, 'YYYY') AS YYYY, job, deptno, sal FROM emp)
 PIVOT (avg(sal) AS sal
