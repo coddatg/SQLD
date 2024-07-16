@@ -9,31 +9,30 @@
 /*
  * JOIN
  * 
- * 일반적으로는 PK, FK를 이용
- * 논리적 관계만으로도 가능
  * 테이블 여러개 조인해도 2개씩 조인
  * JOIN A, B, C, D -> JOIN(JOIN(JOIN(A, B), C), D)
- * 
  */
 
 /*
  * EQUI JOIN
- * 테이블 간의 칼럼 값들이 정확히 일치 할 때
- * 
+ * 테이블 간의 칼럼 값들이 정확히 일치 할 때 사용
+ *
+ * 일반적으로는 PK, FK를 이용
+ * 논리적 관계만으로도 가능
  * JOIN 대상 테이블 N개라면 EQUI JOIN은 조인 조건 N-1개 필요
  */
 
 SELECT * FROM emp;
 SELECT * FROM dept;
 
--- 테이블 이름을 namespace로 컬럼을 조회할 수 있다.
+-- 테이블 이름을 컬럼 명 앞에 '.'로 구분해서 사용한다. 
 SELECT emp.empno, emp.ename, dept.dname
 FROM emp, dept
 WHERE emp.deptno=dept.deptno;
 
--- namespace는 양쪽에 컬럼 이름이 겹치지 않는 경우는 필수가 아니다. 
+-- 테이블명 사용은 양 쪽 테이블의 컬럼명이 겹치지 않는 경우는 필수가 아니다. 
 SELECT empno, emp.ename, dept.dname
-FROM emp, dept
+FROM emp, deptno
 WHERE emp.deptno=dept.deptno;
 
 -- Alias 활용, 쿼리 복잡도 줄일 수 있다.
@@ -46,7 +45,7 @@ WHERE a.deptno=b.deptno;
 -- 아래 쿼리는 오류 발생
 SELECT emp.empno, emp.ename, b.dname
 FROM emp a, dept b
-WHERE AND emp.deptno=b.deptno;
+WHERE emp.deptno=b.deptno;
 
 -- 조건 추가해서 쿼리 할 수 있다.
 SELECT a.empno, emp.ename, b.dname
@@ -72,7 +71,7 @@ WITH salgrade AS (
 --SELECT * FROM salgrade;
 SELECT e.ename, e.job, e.sal, s.losal, s.hisal, s.grade
 FROM emp e, salgrade s
--- WHERE e.sal between s.losal AND s.hisal;
+-- WHERE e.sal between s.losal AND s.hisal
 ORDER BY e.ename, s.grade;
 
 /*
