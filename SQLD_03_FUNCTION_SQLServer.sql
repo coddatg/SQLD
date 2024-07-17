@@ -1,3 +1,35 @@
+--------------------------------------------------------------------------------------
+-- Writer         : 땃지
+-- Course URL     : https://inf.run/FGmid
+-- Email          : coddat.g@gmail.com
+-- Copyright      : Copyright 2024. by 땃지. All Rights Reserved.
+-- Notice         : 이 쿼리 스크립트를 가공, 인용하실 때는 출처를 명확히 밝혀주시기 바랍니다.
+--------------------------------------------------------------------------------------
+
+
+SELECT
+	lower('SQL Expert'),
+	upper('SQL Expert'),
+	ascii('A'),
+	char(65),
+	concat('SQL', ' Expert', 'adasag'), -- 3개 이상 가능
+	len('SQL Expert');
+
+SELECT
+	ltrim('xxxYYYZZxYZ', 'x'),  -- 책에는 두번째 인자 못받는 것으로..
+	ltrim('xxxYYYZZxYZ', 'xY'), -- 최근 버전에서 업데이트 됐으나, 안되는 것으로 알자! 
+	ltrim('xxxYYYZZxYZ', 'xYZ'),
+	ltrim('   xxxx'),
+	rtrim('xxxYYYZZxYZ', 'ZY'),
+	rtrim('xxxx    '),
+	trim('  xxxx    '),
+	trim('x' FROM 'xxxxYYYzzYZxxxx'),
+	trim(BOTH 'x' FROM 'xxxxYYYzzYZxxxx'),
+	trim(LEADING 'x' FROM 'xxxxYYYzzYZxxxx'),
+	trim(TRAILING 'x' FROM 'xxxxYYYzzYZxxxx');
+
+
+
 SELECT getdate(),
        getdate()+1.0,
        getdate()+1.0/24,

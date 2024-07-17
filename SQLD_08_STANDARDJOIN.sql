@@ -138,7 +138,6 @@ SELECT 1 AS proj_id, 'Project A' AS proj_name, 1 AS emp_id FROM dual UNION ALL
 SELECT 2 AS proj_id, 'Project B' AS proj_name, 2 AS emp_id FROM dual UNION ALL
 SELECT 3 AS proj_id, 'Project C' AS proj_name, 4 AS emp_id FROM dual);
 
-
 SELECT e.emp_id,
     e.name AS employee_name,
     e.salary,
@@ -148,6 +147,16 @@ FROM v_employee e
 FULL OUTER JOIN v_project p
 ON e.emp_id = p.emp_id
 ORDER BY e.emp_id, p.proj_id;
+
+SELECT emp_id,
+    e.name AS employee_name,
+    e.salary,
+    p.proj_id,
+    p.proj_name
+FROM v_employee e
+FULL OUTER JOIN v_project p
+USING (emp_id)
+ORDER BY emp_id, p.proj_id;
 
 -- full outer join과 실행 결과가 같은 쿼리들
 SELECT e.emp_id,
