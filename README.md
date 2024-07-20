@@ -1,7 +1,7 @@
 # SQLD 강의 자료
 
 ### Course URL
-
+https://inf.run/sV6wK
 ### Email
 coddat.g@gmail.com
 ### LinkedIn Profile
