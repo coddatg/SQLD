@@ -778,5 +778,3 @@ INSERT INTO player VALUES ('2010801','오춘식','K15','','','','MF','22','',TO_DAT
 INSERT INTO player VALUES ('2010802','박창우','K15','','','','DF','13','',TO_DATE('17-MAY-1989','DD_MON_YYYY','NLS_DATE_LANGUAGE = AMERICAN'),'1','177','68');
 INSERT INTO player VALUES ('2010803','박진하','K15','','','','FW','11','',TO_DATE('09-JAN-1989','DD_MON_YYYY','NLS_DATE_LANGUAGE = AMERICAN'),'1','181','62');
 commit;
-
-
