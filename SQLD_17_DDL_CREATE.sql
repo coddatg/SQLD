@@ -9,7 +9,7 @@
 DROP TABLE enrollment purge;
 DROP TABLE student purge;
 DROP TABLE course purge;
-DROP TABLE Department purge;
+DROP TABLE department purge;
 
 
 /*
@@ -33,13 +33,13 @@ DROP TABLE Department purge;
  * 
  */
 
-CREATE TABLE Department (
+CREATE TABLE department (
     department_id NUMBER NOT NULL,
     department_name VARCHAR2(100) NOT NULL,
     CONSTRAINT department_pk PRIMARY KEY (department_id)
 );
 
-CREATE TABLE Student (
+CREATE TABLE student (
     student_id NUMBER(3) CONSTRAINT student_not_null NOT NULL,
     email varchar(50) UNIQUE NOT NULL,
     name VARCHAR2(50) NULL,
@@ -50,7 +50,7 @@ CREATE TABLE Student (
 -- ALTER TABLE Student ADD CONSTRAINT student_pk PRIMARY KEY (student_id);
 -- ALTER TABLE Students ADD CONSTRAINT department_key FOREIGN KEY (department_id) REFERENCES Department(department_id);
 
-CREATE TABLE Course (
+CREATE TABLE course (
     course_id NUMBER(3) NOT NULL,
     course_name VARCHAR2(100) NOT NULL,
     department_id NUMBER(3),
@@ -59,7 +59,7 @@ CREATE TABLE Course (
     	ON DELETE CASCADE
 );
 
-CREATE TABLE Enrollment (
+CREATE TABLE enrollment (
     student_id NUMBER NOT NULL,
     course_id NUMBER NOT NULL,
     semester DATE NOT NULL,
@@ -106,7 +106,6 @@ INSERT INTO Course (course_id, course_name, department_id) VALUES (110, 'Genetic
 INSERT INTO Course (course_id, course_name, department_id) VALUES (111, 'Discrete Mathematics', 1);
 INSERT INTO Course (course_id, course_name, department_id) VALUES (112, 'Statistics', 2);
 INSERT INTO Course (course_id, course_name, department_id) VALUES (113, 'Thermodynamics', 3);
-
 
 
 INSERT INTO Enrollment (student_id, course_id, semester, grade) VALUES (1, 101, TO_DATE('2024-03-01', 'YYYY-MM-DD'), 88.00);
