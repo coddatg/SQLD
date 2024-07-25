@@ -1,0 +1,131 @@
+
+-- p.56 41번 문제
+SELECT  A.고객ID, A.고객명, SUM(B.사용량*C.단가) AS 사용금액
+FROM 고객 A
+INNER JOIN 시간대별사용량 B
+ON A.고객ID=B.고객ID
+INNER JOIN 시간대별구간 C
+ON A.사용시간대 >= C.시작시간대
+AND A.사용시간대 <= C.종료시간대
+-- A.사용시간대 BETWEEN C.시작시간대 AND C.종료시간대
+GROUP BY A.고객ID, A.고객명
+
+-- p.58 44번
+WITH OS AS (
+	SELECT 100 AS OSID, 'Android' AS "OS명" FROM dual UNION ALL
+	SELECT 200, 'iOS' FROM dual UNION ALL
+	SELECT 300, 'Bada' FROM dual 
+), "단말기" AS (
+	SELECT 1000 AS "단말기ID", 'A1000' AS 단말기명, 100 AS OSID FROM dual UNION ALL
+	SELECT 2000, 'A2000', 100 FROM dual UNION ALL
+	SELECT 3000, 'C3000', 200 FROM dual UNION ALL
+	SELECT 4000, 'D3000', 300 FROM dual
+), "고객" AS (
+	SELECT 11000 AS "고객번호", '홍길동' AS 고객명, 1000 AS "단말기ID" FROM dual UNION ALL
+	SELECT 12000, '강감찬', NULL FROM dual UNION ALL
+	SELECT 13000, '이순신', NULL FROM dual UNION ALL
+	SELECT 14000, '안중근', 3000 FROM dual UNION ALL
+	SELECT 15000, '고길동', 4000 FROM dual UNION ALL
+	SELECT 16000, '이대로', 4000 FROM dual
+)
+SELECT A.고객번호, A.고객명, 
+	B."단말기ID", B.단말기명 , C.OSID
+FROM 고객 A 
+LEFT OUTER JOIN 단말기 B
+ON (A.고객번호 IN (11000, 12000) 
+	AND A."단말기ID"=B."단말기ID")
+LEFT OUTER JOIN OS C
+ON (B.OSID=C.OSID)
+ORDER BY A.고객번호
+
+-- p.60 46번 문제
+WITH emp AS (
+	SELECT 1 A, 'b' B, 'w' C FROM dual UNION ALL
+	SELECT 3, 'd', 'w' FROM dual UNION ALL
+	SELECT 5, 'y', 'y' FROM dual
+), dept AS (
+	SELECT 'w' C, 1 D, 10 E FROM dual UNION ALL
+	SELECT 'z', 4, 11 FROM dual UNION ALL
+	SELECT 'v', 2, 22 FROM dual
+)
+SELECT *
+FROM emp a
+LEFT OUTER JOIN dept b
+ON a.C=b.C
+
+-- p.60 47번
+SELECT e.ename, d.deptno, d.dname
+FROM dept d LEFT OUTER JOIN emp e
+ON d.deptno=e.deptno
+
+-- p.61 48번 문제
+WITH tab1 AS (
+	SELECT 'A' C1, 1 C2 FROM dual UNION ALL
+	SELECT 'B', 2 FROM dual UNION ALL
+	SELECT 'C', 3 FROM dual UNION ALL
+	SELECT 'D', 4 FROM dual UNION ALL
+	SELECT 'E', 5 FROM dual
+), tab2 AS (
+	SELECT 'B' C1, 2 C2 FROM dual UNION ALL
+	SELECT 'C', 3 FROM dual UNION ALL
+	SELECT 'D', 4 FROM dual
+)
+SELECT *
+FROM tab1 A 
+LEFT OUTER JOIN tab2 B
+ON A.C1=B.C1 AND B.C2 BETWEEN 1 AND 3
+ORDER BY 1, 2;
+
+
+--p.62 49번
+SELECT A.게시판ID, A.게시판명, COUNT(B.게시글ID) AS CNT
+FROM   게시판 A, 게시글 B
+WHERE  A.게시판ID = B.게시판ID(+) 
+AND    B.삭제여부(+)='N'
+AND    A.삭제여부='Y'
+GROUP BY A.게시판ID, A.게시판명
+ORDER BY A.게시판ID;
+
+
+SELECT A.게시판ID, A.게시판명, COUNT(B.게시글ID) AS CNT
+FROM   게시판 A
+LEFT OUTER JOIN 게시글 B
+ON A.게시판ID = B.게시판ID
+AND B.삭제여부='N'
+WHERE  A.삭제여부='Y'
+GROUP BY A.게시판ID, A.게시판명
+ORDER BY A.게시판ID;
+
+
+-- p.78 66번 문제
+WITH revenue AS (
+	SELECT TO_DATE('2015-11-01', 'YYYY-MM-DD') AS 일자, 1000 AS 매출액 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-01', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-02', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-03', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-04', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-05', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-06', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-07', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-08', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-09', 'YYYY-MM-DD'), 1000 FROM dual UNION ALL
+	SELECT TO_DATE('2015-11-10', 'YYYY-MM-DD'), 1000 FROM dual
+)
+/*
+SELECT A.일자, SUM(A.매출액) AS 누적매출액
+FROM revenue A, revenue B
+WHERE A.일자 >= B.일자
+GROUP BY A.일자
+ORDER BY A.일자;
+*/
+/*
+SELECT 일자,
+	sum(매출액) OVER (ORDER BY 일자 ROWS UNBOUNDED PRECEDING) AS 누적매출액
+FROM revenue;
+*/
+
+
+
+
+
+
