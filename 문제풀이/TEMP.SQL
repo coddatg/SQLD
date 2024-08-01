@@ -1,10 +1,5 @@
 
-
-SELECT A.고객ID, A.고객명, SUM(B.사용량*C.단가) AS 사용금액
-FROM 고객 A
-INNER JOIN 시간대별사용량 B
-ON A.고객ID=B.고객ID
-INNER JOIN 시간대구간 C
-ON A.사용시간대 >= C.시작시간대
-AND A.사용시간대 <= C.종료시간대
-GROUP BY A.고객ID, A.고객명
+-- p.124 118번 문제
+-- Department did '1'인 행 삭제 할 때 Empoyee did가 '1'인 행을 같이 삭제하도록 하는 방법 
+Employee(eid, ename, did)
+Department(did, dname, budget)
