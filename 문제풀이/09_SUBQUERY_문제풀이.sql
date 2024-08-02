@@ -134,11 +134,14 @@ ORDER BY A.MemberID
 -- p.84 71번 문제
 SELECT A.회원ID, A.회원명, A.이메일
 FROM   회원 A
+------------ ㄱ
 WHERE  EXISTS (SELECT 'X'
                FROM   이벤트 B, 메일발송 C
                WHERE  B.시작일자 >= '2014.10.01'
                AND    B.이벤트ID=C.이벤트ID
-               AND    A.회원ID=C.회원ID 
+------------ ㄴ
+               AND    A.회원ID=C.회원ID
+------------ ㄷ
                HAVING COUNT(*) < (SELECT COUNT(*)
                                   FROM   이벤트
                                   WHERE  시작일자 >= '2014.10.01'));

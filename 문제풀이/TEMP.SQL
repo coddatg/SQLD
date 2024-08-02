@@ -1,5 +1,10 @@
 
--- p.124 118번 문제
--- Department did '1'인 행 삭제 할 때 Empoyee did가 '1'인 행을 같이 삭제하도록 하는 방법 
-Employee(eid, ename, did)
-Department(did, dname, budget)
+-- p.112 99번 문제
+
+-- 1번
+CREATE TABLE PRODUCT
+( PROD_ID VARCHAR2(10) NOT NULL,
+  PROD_NM VARCHAR2(100) NOT NULL,
+  REG_DT DATE NOT NULL,
+  REGR_NO NUMBER(10) NULL )
+ALTER TABLE PRODUCT ADD PRIMARY KEY PRODUCT_PK ON (PROD_ID)
