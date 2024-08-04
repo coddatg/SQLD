@@ -1,5 +1,42 @@
--- p.122 114번 문제
 
+-- p.112 99번 문제
+-- 1번
+CREATE TABLE PRODUCT
+( PROD_ID VARCHAR2(10) NOT NULL,
+  PROD_NM VARCHAR2(100) NOT NULL,
+  REG_DT DATE NOT NULL,
+  REGR_NO NUMBER(10) NULL );    
+ALTER TABLE PRODUCT ADD PRIMARY KEY PRODUCT_PK ON (PROD_ID);
+
+-- 2번
+CREATE TABLE PRODUCT
+( PROD_ID VARCHAR2(10) NOT NULL,
+  PROD_NM VARCHAR2(100) NOT NULL,
+  REG_DT DATE,
+  REGR_NO NUMBER(10) NULL );
+ALTER TABLE PRODUCT ADD CONSTRAINT PRODUCT_PK PRIMARY KEY (PROD_ID);
+
+-- 3번
+CREATE TABLE PRODUCT
+( PROD_ID VARCHAR2(10) NOT NULL,
+  PROD_NM VARCHAR2(100) NOT NULL,
+  REG_DT DATE NOT NULL,
+  REGR_NO NUMBER(10) NULL,
+  ADD CONSTRAINT PRIMARY KEY (PROD_ID) );
+
+-- 4번
+CREATE TABLE PRODUCT
+( PROD_ID VARCHAR2(10) NOT NULL,
+  PROD_NM VARCHAR2(100) NOT NULL,
+  REG_DT DATE NOT NULL,
+  REGR_NO NUMBER(10),
+  CONSTRAINT PRODUCT_PK PRIMARY KEY (PROD_ID));
+
+-- p.117 DML
+
+
+
+-- p.122 114번 문제
 CREATE TABLE TBL
 (
 	ID NUMBER PRIMARY KEY,
@@ -58,3 +95,51 @@ INSERT INTO 주문(주문번호, 주문일자, 회원번호, 주문상태코드)
 SELECT * FROM 주문;
 
 DROP TABLE 주문;
+
+-- p.129 126번 문제
+
+-- 1번
+UPDATE 부서 A 
+SET 담당자=(
+    SELECT C.부서코드
+    FROM (SELECT 부서코드, MAX(변경일자) AS 변경일자
+          FROM 부서임시
+          GROUP BY 부서코드) B, 부서임시 C
+          WHERE B.부서코드=C.부서코드
+          AND B.변경일자=C.변경일자
+          AND A.부서코드=C.부서코드)
+
+-- 2번
+UPDATE 부서 A 
+SET 담당자=(
+    SELECT C.부서코드
+    FROM (SELECT 부서코드, MAX(변경일자) AS 변경일자
+          FROM 부서임시
+          GROUP BY 부서코드) B, 부서임시 C
+          WHERE B.부서코드=C.부서코드
+          AND B.변경일자=C.변경일자
+          AND A.부서코드=C.부서코드)
+WHERE EXISTS (SELECT 1 FROM 부서 X WHERE A.부서코드=X.부서코드)
+
+-- 3번
+UPDATE 부서 A 
+SET 담당자=(
+    SELECT B.담당자
+    FROM   부서임시 B
+   	WHERE  B.부서코드=A.부서코드
+   	AND    B.변경일자=(
+   		   SELECT MAX(C.변경일자)
+           FROM 부서임시 C
+           WHERE C.부서코드=B.부서코드))
+WHERE 부서코드 IN (SELECT 부서코드 FROM 부서임시);
+
+-- 4번
+UPDATE 부서 A 
+SET 담당자=(
+    SELECT B.담당자
+    FROM 부서임시 B
+    WHERE A.부서코드=B.부서코드
+    AND B.변경일자='2015.01.25')
+
+DROP TABLE 부서;
+DROP TABLE 부서임시;
