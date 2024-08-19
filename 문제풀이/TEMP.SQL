@@ -1,52 +1,16 @@
 
 /*
- * p68 55번 문제
+ * p.96 85번
  */
 
-SELECT A.서비스ID, B.서비스명, B.서비스URL
-FROM (SELECT 서비스ID
-      FROM 서비스
-      INTERSECT
-      SELECT 서비스ID
-      FROM 서비스이용) A, 서비스 B
-WHERE A.서비스ID=B.서비스ID;
-
--- 1번 보기
-SELECT B.서비스ID, A.서비스명, A.서비스URL
-FROM 서비스 A, 서비스이용 B
-WHERE A.서비스ID=B.서비스ID;
-
--- 2번 보기
-SELECT X.서비스ID, X.서비스명, X.서비스URL
-FROM 서비스 X
-WHERE NOT EXISTS (SELECT 1 
-                  FROM (SELECT 서비스ID
-                        FROM 서비스
-                        MINUS
-                        SELECT 서비스ID
-                        FROM 서비스이용) Y
-                  WHERE X.서비스ID=Y.서비스ID)
-
--- 3번 보기
-SELECT B.서비스ID, A.서비스명, A.서비스URL
-FROM 서비스 A LEFT OUTER JOIN 서비스이용 B
-ON (A.서비스ID=B.서비스ID)
-WHERE B.서비스ID IS NULL
-GROUP BY B.서비스ID, A.서비스명, A.서비스URL
-
--- 4번 보기
-SELECT A.서비스ID, A.서비스명, A.서비스URL
-FROM 서비스 A
-WHERE 서비스ID IN (SELECT 서비스ID
-                 FROM 서비스이용
-                 MINUS
-                 SELECT 서비스ID
-                 FROM 서비스)
-
-SELECT A.서비스ID, A.서비스명, A.서비스URL
-FROM 서비스 A
-WHERE 서비스ID NOT IN (SELECT 서비스ID
-                 FROM 서비스
-                 MINUS
-                 SELECT 서비스ID
-                 FROM 서비스이용 )
+SELECT 고객번호, 고객명, 매출액,
+      RANK() OVER(ORDER BY 매출액 DESC) AS 순위
+FROM (
+      SELECT A.고객번호,
+             MAX(A.고객명) AS 고객명,
+             SUM(B.매출액) AS 매출액,
+             FROM 고객 A INNER JOIN 월별매출 B
+             ON (A.고객번호=B.고객번호)
+             GROUP BY A.고객번호
+      )
+ORDER BY 순위;

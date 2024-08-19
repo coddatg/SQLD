@@ -1,0 +1,94 @@
+
+
+/*
+ * p.89 77번
+ */
+WITH 사원 AS (
+	SELECT '001' AS 사원ID, 100 AS 부서ID, 2500 AS 연봉 FROM dual UNION ALL
+	SELECT '002', 100, 3000 FROM dual UNION ALL
+	SELECT '003', 200, 4500 FROM dual UNION ALL
+	SELECT '004', 200, 3000 FROM dual UNION ALL
+	SELECT '005', 200, 2500 FROM dual UNION ALL
+	SELECT '006', 300, 4500 FROM dual UNION ALL
+	SELECT '007', 300, 3000 FROM dual
+)
+-- SELECT * FROM 사원;
+SELECT 사원ID, COL2, COL3
+FROM (SELECT 사원ID, 
+			ROW_NUMBER() OVER (PARTITION BY 부서ID ORDER BY 연봉 DESC) AS COL1,
+			SUM(연봉) OVER (PARTITION BY 부서ID ORDER BY 사원ID
+						   ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS COL2,
+			MAX(연봉) OVER (ORDER BY 연봉 DESC ROWS CURRENT ROW) AS COL3
+	  FROM 사원)
+WHERE COL1=2
+ORDER BY 1;
+
+
+/*
+ * p.96 85번
+ */
+SELECT 고객번호, 고객명, 매출액,
+      RANK() OVER(ORDER BY 매출액 DESC) AS 순위
+FROM (
+      SELECT A.고객번호,
+             MAX(A.고객명) AS 고객명,
+             SUM(B.매출액) AS 매출액,
+             FROM 고객 A INNER JOIN 월별매출 B
+             ON (A.고객번호=B.고객번호)
+             GROUP BY A.고객번호
+      )
+ORDER BY 순위;
+
+/*
+ * p.98 86번
+ */
+SELECT JOB, ENAME, SAL, COMM,
+	DENSE_RANK() OVER (ORDER BY NVL(SAL, 0) + NVL(COMM, 0) DESC) RANK
+FROM EMP;
+
+/*
+ * p.100 88번
+ */
+SELECT 상품분류코드, 
+        AVG(상품가격) AS 상품가격,
+        COUNT(*) OVER (ORDER BY AVG(상품가격)
+                      RANGE BETWEEN 10000 PRECEDING 
+                      AND 10000 FOLLOWING) AS 유사개수
+FROM 상품
+GROUP BY 상품분류코드
+
+/*
+ * p.101 89번
+ */
+WITH 사원 AS (
+	SELECT '001' AS 사원ID, 100 AS 부서ID, '홍길동' AS 사원명, 2500 AS 연봉 FROM dual UNION ALL
+	SELECT '002', 100, '강감찬', 3000 FROM dual UNION ALL
+	SELECT '003', 200, '김유신', 4500 FROM dual UNION ALL
+	SELECT '004', 200, '김선달', 3000 FROM dual UNION ALL
+	SELECT '005', 200, '유학생', 2500 FROM dual UNION ALL
+	SELECT '006', 300, '변사또', 4500 FROM dual UNION ALL
+	SELECT '007', 300, '박문수', 3000 FROM dual
+)
+-- SELECT * FROM 사원;
+SELECT Y.사원ID, Y.부서ID, Y.사원명, Y.연봉
+FROM (SELECT 사원ID, MAX(연봉) OVER (PARTITION BY 부서ID) AS 최고연봉
+	  FROM 사원) X, 사원 Y
+WHERE X.사원ID = Y.사원ID
+AND   X.최고연봉 = Y.연봉;
+
+
+/*
+ * p.102 90번
+ */
+SELECT EMPNO, HIREDATE, SAL, 
+	  LAG(SAL) OVER (ORDER BY HIREDATE) AS SAL2
+FROM EMP 
+WHERE JOB='SALESMAN';
+
+
+/*
+ * p.108 98 번
+ */
+SELECT COL1, COL2,
+      ______ () OVER (ORDER BY COL2) COL3
+FROM TBL;
