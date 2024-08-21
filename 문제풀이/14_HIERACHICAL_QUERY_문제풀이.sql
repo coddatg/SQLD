@@ -70,7 +70,7 @@ ORDER BY 부서코드
 SELECT 부서코드, 부서명, 상위부서코드, LEVEL
 FROM 부서
 START WITH 부서코드=100
-CONNECT BY PRIOR 상위부서코드=부서코드
+CONNECT BY 상위부서코드 = PRIOR 부서코드
 
 -- 3번 보기
 SELECT 부서코드, 부서명, 상위부서코드, LEVEL

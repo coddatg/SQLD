@@ -1,16 +1,18 @@
 
 /*
- * p.96 85번
+ * p.99 87 번
  */
 
-SELECT 고객번호, 고객명, 매출액,
-      RANK() OVER(ORDER BY 매출액 DESC) AS 순위
-FROM (
-      SELECT A.고객번호,
-             MAX(A.고객명) AS 고객명,
-             SUM(B.매출액) AS 매출액,
-             FROM 고객 A INNER JOIN 월별매출 B
-             ON (A.고객번호=B.고객번호)
-             GROUP BY A.고객번호
-      )
-ORDER BY 순위;
+WITH 추천내역 AS (
+      SELECT 'SNS' 추천경로, '나한일' 추천인, '강감찬' 피추천인, 75 추천점수 FROM DUAL UNION ALL
+      SELECT 'SNS', '이순신', '강감찬', 80 FROM DUAL UNION ALL
+      SELECT '이벤트응모', '홍길동', '강감찬', 88 FROM DUAL UNION ALL
+      SELECT '이벤트응모', '저절로', '이순신', 78 FROM DUAL UNION ALL
+      SELECT '홈페이지', '저절로', '이대로', 93 FROM DUAL UNION ALL
+      SELECT '홈페이지', '홍두깨', '심청이', 98 FROM DUAL
+)
+SELECT 추천경로, 추천인, 피추천인, 추천점수
+FROM (SELECT 추천경로, 추천인, 피추천인, 추천점수,
+            ROW_NUMBER() OVER (PARTITION BY 추천경로 ORDER BY 추천점수 DESC) AS RNUM
+      FROM 추천내역)
+WHERE RNUM=1
