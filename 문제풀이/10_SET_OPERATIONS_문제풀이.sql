@@ -77,6 +77,30 @@ WHERE 서비스ID NOT IN (SELECT 서비스ID
                  FROM 서비스이용)
 
 /*
+ * 55번 문제 예시 테이블
+ */
+
+ WITH 서비스 AS (
+    SELECT 1 AS 서비스ID, '온라인 쇼핑' AS 서비스명, 'http://shop.example.com' AS 서비스URL FROM dual UNION ALL
+    SELECT 2, '비디오 스트리밍', 'http://video.example.com' FROM dual UNION ALL
+    SELECT 3, '뉴스 웹사이트', 'http://news.example.com' FROM dual UNION ALL
+    SELECT 4, '클라우드 스토리지', 'http://cloud.example.com' FROM dual UNION ALL
+    SELECT 5, '온라인 교육', 'http://edu.example.com' FROM dual
+), 회원 AS (
+    SELECT 101 AS 회원ID, '김철수' AS 회원명 FROM dual UNION ALL
+    SELECT 102, '이영희' FROM dual UNION ALL
+    SELECT 103, '박지민' FROM dual UNION ALL
+    SELECT 105, '정하늘' FROM dual
+), 서비스이용 AS (
+    SELECT 1 AS 서비스ID, 101 AS 회원ID, TO_DATE('2024-08-21 10:00:00', 'YYYY-MM-DD HH24:MI:SS') AS 이용일시 FROM dual UNION ALL
+    SELECT 1, 102, TO_DATE('2024-08-21 11:00:00', 'YYYY-MM-DD HH24:MI:SS') FROM dual UNION ALL
+    SELECT 2, 101, TO_DATE('2024-08-22 14:30:00', 'YYYY-MM-DD HH24:MI:SS') FROM dual UNION ALL
+    SELECT 2, 103, TO_DATE('2024-08-22 15:45:00', 'YYYY-MM-DD HH24:MI:SS') FROM dual UNION ALL
+    SELECT 3, 102, TO_DATE('2024-08-23 09:00:00', 'YYYY-MM-DD HH24:MI:SS') FROM dual UNION ALL
+    SELECT 3, 103, TO_DATE('2024-08-23 10:30:00', 'YYYY-MM-DD HH24:MI:SS') FROM dual
+)
+
+/*
  * p.69 56번 문제
  */
 WITH TBL1 AS (
@@ -98,3 +122,4 @@ FROM (SELECT COL1, COL2
       SELECT COL1, COL2
       FROM TBL1)
 GROUP BY COL1, COL2;
+
