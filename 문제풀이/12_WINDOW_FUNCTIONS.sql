@@ -53,6 +53,54 @@ FROM (SELECT 사원번호, 이름, 부서코드, 급여,
 ORDER BY A.부서코드, A.급여 DESC, A.사원번호
 
 
+
+/*
+ * p.81 69번 문제
+ */
+WITH TBL AS (
+	SELECT 1 KEY, 'A' GRP, 10 VAL1, 100 VAL2 FROM dual UNION ALL
+	SELECT 2, 'A', 10, 200 FROM dual UNION ALL
+	SELECT 3, 'A', 10, 300 FROM dual UNION ALL
+	SELECT 4, 'A', 20, 400 FROM dual UNION ALL
+	SELECT 5, 'A', 50, 500 FROM dual UNION ALL
+	SELECT 6, 'B', 40, 600 FROM dual UNION ALL
+	SELECT 7, 'B', 10, 700 FROM dual UNION ALL
+	SELECT 8, 'B', 20, 800 FROM dual UNION ALL
+	SELECT 9, 'B', 20, 900 FROM dual UNION ALL
+	SELECT 10, 'B', 10, 1000 FROM dual
+)
+SELECT * FROM tbl;
+
+
+-- 1번 보기
+SELECT KEY,
+	percent_rank() OVER (PARTITION BY GRP ORDER BY val1) AS val1,
+	DENSE_RANK() OVER (ORDER BY val2) AS val2
+FROM tbl
+ORDER BY KEY;
+
+-- 2번 보기
+SELECT KEY,
+	cume_dist() OVER (PARTITION BY GRP ORDER BY val1) AS val1,
+	RANK() OVER (ORDER BY val2) AS val2
+FROM tbl
+ORDER BY KEY;
+
+-- 3번 보기
+SELECT KEY,
+	percent_rank() OVER (PARTITION BY GRP ORDER BY val1) AS val1,
+	RANK() OVER (ORDER BY val2) AS val2
+FROM tbl
+ORDER BY KEY;
+
+
+-- 4번 보기
+SELECT KEY,
+	ratio_to_report(val1) OVER (PARTITION BY GRP) AS val1,
+	ntile(5) OVER (ORDER BY val2) AS val2
+FROM tbl
+ORDER BY KEY;
+
 /*
  * p.89 77번
  */
