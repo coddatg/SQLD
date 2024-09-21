@@ -1,0 +1,19 @@
+services:
+  oracle:
+    image: ddatg/sqld-oracle:latest
+    container_name: oracle
+    restart: unless-stopped
+    ports:
+      - '1521:1521'
+    environment:
+      ORACLE_PASSWORD: 'pass'
+
+  sqlserver:
+    image: ddatg/sqld-sqlserver:latest
+    container_name: sql-server
+    restart: unless-stopped
+    ports:
+      - '1433:1433'
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'N4&8k@zR2!qWpX7^'
